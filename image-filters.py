@@ -131,7 +131,7 @@ def add_filters_to_img(destination_images_dir, img_path, img_name, annotations, 
     copy_instance_annotations(img_entity, img_annotations, base + "_f4" + extension, destination_dict)
 
     f5_filepath = get_destination_img_path(destination_images_dir, 5, base, extension)
-    io.imsave(f5_filepath, util.random_noise(img_rgb[:,:,:3], mode="salt", amount=random.uniform(0.05, 0.3)))
+    io.imsave(f5_filepath, util.random_noise(img_rgb[:,:,:3], mode="salt", amount=random.uniform(0.05, 0.15)))
 
     copy_instance_annotations(img_entity, img_annotations, base + "_f5" + extension, destination_dict)
 

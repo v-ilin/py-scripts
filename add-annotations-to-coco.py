@@ -11,10 +11,10 @@ def get_max_id(dict, dict_key):
     return max
 
 
-with open("e:\\Dev\\datasets\\coco\\annotations_trainval2014\\annotations\\instances_train2014.json", "r") as cocoTrain:
+with open("e:\\Dev\\datasets\\coco-persons\\instances_train2014.json", "r") as cocoTrain:
     cocoTrainData = json.load(cocoTrain)
 
-with open("e:\\Dev\\datasets\\coco\\annotations_trainval2014\\annotations\\instances_val2014.json", "r") as cocoVal:
+with open("e:\\Dev\\datasets\\coco-persons\\instances_val2014.json", "r") as cocoVal:
     cocoValData = json.load(cocoVal)
 
 with open("e:\\Dev\\datasets\\image-net\\n03492922\\images_with_filters\\instances_train2014.json", "r") as hardhatsTrain:
