@@ -1,132 +1,158 @@
-sudo nvidia-docker run
-	-v /detectron/lib/datasets/dataset_catalog.py:/detectron/lib/datasets/dataset_catalog.py
-	-v /detectron/configs/hardhats_filters_coco/tutorial_1gpu_e2e_faster_rcnn_R-50-FPN.yaml:/detectron/configs/hardhats_filters_coco/tutorial_1gpu_e2e_faster_rcnn_R-50-FPN.yaml
-	-v /tmp/detectron-output/hardhats-with-filters-3:/tmp/detectron-output/hardhats-with-filters-3
-	-v /detectron/lib/datasets/data/hardhats_filters_coco:/detectron/lib/datasets/data/hardhats_filters_coco 
-	--rm -it detectron:c2-cuda9-cudnn7
-
-sudo nvidia-docker run -v /detectron/lib/datasets/dataset_catalog.py:/detectron/lib/datasets/dataset_catalog.py -v /detectron/configs/hardhats_filters_coco/tutorial_1gpu_e2e_faster_rcnn_R-50-FPN.yaml:/detectron/configs/hardhats_filters_coco/tutorial_1gpu_e2e_faster_rcnn_R-50-FPN.yaml -v /tmp/detectron-output/hardhats-with-filters-2:/tmp/detectron-output/hardhats-with-filters-2	-v /detectron/lib/datasets/data/hardhats_filters_coco:/detectron/lib/datasets/data/hardhats_filters_coco --rm -it detectron:c2-cuda9-cudnn7
-
 sudo docker exec -it 969 python2 tools/train_net.py \
-	--cfg configs/hardhats_filters_coco/tutorial_1gpu_e2e_faster_rcnn_R-50-FPN.yaml \
-	OUTPUT_DIR /tmp/detectron-output/hardhats-with-filters-3
+--cfg configs/hardhats_filters_coco/tutorial_1gpu_e2e_faster_rcnn_R-50-FPN.yaml \
+OUTPUT_DIR /tmp/detectron-output/hardhats-with-filters-3
 	
 sudo docker exec -it 969 python2 tools/train_net.py --cfg configs/hardhats_filters_coco/tutorial_1gpu_e2e_faster_rcnn_R-50-FPN.yaml OUTPUT_DIR /tmp/detectron-output/hardhats-with-filters-3
 
 sudo docker exec 118 python2 tools/visualize_results.py
-	--dataset hardhats_filters_coco_2014_train
-	--detections /tmp/detectron-output/hardhats-with-filters-2/test/hardhats_filters_coco_2014_train/generalized_rcnn/detections.pkl
-	--output-dir /tmp/detectron-output/hardhats-with-filters-2/vis-train
-	
-
-sudo nvidia-docker run \
-	-v /detectron/lib/datasets/dataset_catalog.py:/detectron/lib/datasets/dataset_catalog.py \
-	-v /detectron/configs/hardhats_filters_coco/tutorial_1gpu_e2e_faster_rcnn_R-50-FPN.yaml:/detectron/configs/hardhats_filters_coco/tutorial_1gpu_e2e_faster_rcnn_R-50-FPN.yaml \
-	-v /tmp/detectron-output:/tmp/detectron-output \
-	-v /detectron/lib/datasets/data/hardhats_filters_coco:/detectron/lib/datasets/data/hardhats_filters_coco \
-	-v /detectron/lib/datasets/dummy_datasets.py:/detectron/lib/datasets/dummy_datasets.py
-	--rm -it detectron:c2-cuda9-cudnn7
+--dataset hardhats_filters_coco_2014_train
+--detections /tmp/detectron-output/hardhats-with-filters-2/test/hardhats_filters_coco_2014_train/generalized_rcnn/detections.pkl
+--output-dir /tmp/detectron-output/hardhats-with-filters-2/vis-train
 	
 sudo docker exec b76 python2 tools/infer.py \
-	--im /detectron/lib/datasets/data/hardhats_filters_coco/val/n03492922_9917.jpg \
-	--rpn-pkl /tmp/detectron-output/hardhats-with-filters-3/train/hardhats_filters_coco_2014_train/generalized_rcnn/model_final.pkl \
-	--rpn-cfg /detectron/configs/hardhats_filters_coco/tutorial_1gpu_e2e_faster_rcnn_R-50-FPN.yaml \
-	--output-dir /tmp/detectron-output/test
+--im /detectron/lib/datasets/data/hardhats_filters_coco/val/n03492922_9917.jpg \
+--rpn-pkl /tmp/detectron-output/hardhats-with-filters-3/train/hardhats_filters_coco_2014_train/generalized_rcnn/model_final.pkl \
+--rpn-cfg /detectron/configs/hardhats_filters_coco/tutorial_1gpu_e2e_faster_rcnn_R-50-FPN.yaml \
+--output-dir /tmp/detectron-output/test
 	
+sudo docker exec 66f python2 tools/infer_simple.py \
+--cfg /home/user/vilin/detectron-input/pretrained_models/e2e_mask_rcnn_X-101-32x8d-FPN_1x.yaml \
+--output-dir /tmp/test \
+--image-ext png \
+--wts /home/user/vilin/detectron-input/pretrained_models/person_keypoints.pkl \
+/detectron/detectron/datasets/data/hardhat_gloves_goggles/val
 
-sudo docker exec b76 python2 tools/infer_simple.py \
-	--cfg /detectron/configs/hardhats_filters_coco/tutorial_1gpu_e2e_faster_rcnn_R-50-FPN.yaml \
-	--output-dir /tmp/detectron-output/test \
-	--image-ext jpg \
-	--wts /tmp/detectron-output/hardhats-with-filters-3/train/hardhats_filters_coco_2014_train/generalized_rcnn/model_final.pkl \
-	/detectron/lib/datasets/data/hardhats_filters_coco/val/n03492922_29975_f5.jpg
-
-	
-	
 sudo docker exec b76 python2 tools/infer_simple.py --cfg /detectron/configs/hardhats_filters_coco/tutorial_1gpu_e2e_faster_rcnn_R-50-FPN.yaml --output-dir /tmp/detectron-output/test --image-ext jpg --wts /tmp/detectron-output/hardhats-with-filters-3/train/hardhats_filters_coco_2014_train/generalized_rcnn/model_final.pkl
 
 sudo docker exec b76 python2 tools/infer.py --im /detectron/lib/datasets/data/hardhats_filters_coco/val/n03492922_9917.jpg --rpn-pkl /tmp/detectron-output/hardhats-with-filters-3/train/hardhats_filters_coco_2014_train/generalized_rcnn/model_final.pkl --rpn-cfg /detectron/configs/hardhats_filters_coco/tutorial_1gpu_e2e_faster_rcnn_R-50-FPN.yaml --output-dir /tmp/detectron-output/test
 
 sudo docker exec b76 python2 tools/test_net.py --cfg /tmp/test-config.yaml NUM_GPUS 1 TEST.WEIGHTS /tmp/detectron-output/hardhats-with-filters-3/train/hardhats_filters_coco_2014_train/generalized_rcnn/model_final.pkl
+	
+sudo docker exec 0a4 python2 tools/infer_balaclava_model.py \
+--cfg /detectron/configs/custom/hardhats_persons_5/tutorial_1gpu_e2e_faster_rcnn_R-50-FPN.yaml \
+--output-dir /home/user/vilin/detectron-output/demo1_m4_m5 \
+--image-ext jpg \
+--wts /home/user/vilin/detectron-output/hardhats_persons_5/train/hardhats_persons_5_train/generalized_rcnn/model_final.pkl \
+/home/user/vantonov/video/tmp/demo1
 
-sudo nvidia-docker run
-	-v /detectron/lib/datasets/dataset_catalog.py:/detectron/lib/datasets/dataset_catalog.py
-	-v /detectron/configs/hardhats_filters_coco/tutorial_1gpu_e2e_faster_rcnn_R-50-FPN.yaml:/detectron/configs/hardhats_filters_coco/tutorial_1gpu_e2e_faster_rcnn_R-50-FPN.yaml
-	-v /tmp/detectron-output/hardhats-with-filters-3:/tmp/detectron-output/hardhats-with-filters-3
-	-v /detectron/lib/datasets/data/hardhats_filters_coco:/detectron/lib/datasets/data/hardhats_filters_coco 
-	--rm -it detectron:c2-cuda9-cudnn7
+sudo docker exec -it f96 python2 tools/train_net.py \
+--cfg configs/custom/hggb_4/e2e_mask_rcnn_R-50-FPN_1x.yaml \
+OUTPUT_DIR /home/user/vilin/detectron-output/hggb_4
+	
+sudo docker exec 30c python2 tools/infer_balaclava_model_save.py \
+	--cfg /detectron/configs/custom/hardhats_persons_7/e2e_mask_rcnn_X-101-64x4d-FPN_1x.yaml \
+	--output-dir /home/user/vilin/detectron-output/hardhats_persons_7/pdf \
+	--image-ext jpg \
+	--wts /home/user/vilin/detectron-output/hardhats_persons_7/train/hardhats_persons_5_train/generalized_rcnn/model_final.pkl \
+	/home/user/vantonov/video/tmp/demo3/00.00.06.000.jpg
 
-	/tmp/tutorial_1gpu_e2e_faster_rcnn_R-50-FPN.yaml /tmp/misha.jpg /tmp/model_final.pkl
-python2 /detectron/tools/infer_simple.py --cfg /tmp/tutorial_1gpu_e2e_faster_rcnn_R-50-FPN.yaml --output-dir /tmp --wts /tmp/model_final.pkl /tmp/misha.jpg
+sudo nvidia-docker run -d \
+-v /detectron/detectron/datasets/dataset_catalog.py:/detectron/detectron/datasets/dataset_catalog.py \
+-v /detectron/detectron/datasets/dummy_datasets.py:/detectron/detectron/datasets/dummy_datasets.py \
+-v /detectron/detectron/datasets/data:/detectron/detectron/datasets/data \
+-v /detectron/detectron/custom:/detectron/detectron/custom \
+-v /detectron/configs:/detectron/configs \
+-v /detectron/tools:/detectron/tools \
+-v /home/user/vilin/detectron-input:/home/user/vilin/detectron-input \
+-v /home/user/vilin/detectron-output:/home/user/vilin/detectron-output \
+-v /tmp:/tmp \
+-v /home/user/vantonov/video/tmp:/home/user/vantonov/video/tmp \
+-v /detectron/detectron/utils/net.py:/detectron/detectron/utils/net.py \
+-v /detectron/detectron/utils/vis.py:/detectron/detectron/utils/vis.py \
+-v /detectron/detectron/modeling/detector.py:/detectron/detectron/modeling/detector.py \
+--rm -it detectron:c2-cuda9-cudnn7
 
-
-sudo nvidia-docker run \
-	-v /detectron/lib/datasets/dataset_catalog.py:/detectron/lib/datasets/dataset_catalog.py \
-	-v /detectron/configs/hardhats_filters_coco/tutorial_1gpu_e2e_faster_rcnn_R-50-FPN.yaml:/detectron/configs/hardhats_filters_coco/tutorial_1gpu_e2e_faster_rcnn_R-50-FPN.yaml \
-	-v /tmp/detectron-output:/tmp/detectron-output \
-	-v /detectron/lib/datasets/data/hardhats_filters_coco:/detectron/lib/datasets/data/hardhats_filters_coco \
-	-v /detectron/lib/datasets/dummy_datasets.py:/detectron/lib/datasets/dummy_datasets.py
-	--rm -it detectron:c2-cuda9-cudnn7
+-v /detectron/detectron/core/test.py:/detectron/detectron/core/test.py \
+-v /detectron/detectron/utils/vis.py:/detectron/detectron/utils/vis.py \
 	
-sudo nvidia-docker run \
-	-v /detectron/lib/datasets/dataset_catalog.py:/detectron/lib/datasets/dataset_catalog.py \
-	-v /detectron/configs/hardhats_filters_coco/tutorial_1gpu_e2e_faster_rcnn_R-50-FPN.yaml:/detectron/configs/hardhats_filters_coco/tutorial_1gpu_e2e_faster_rcnn_R-50-FPN.yaml \
-	-v /tmp/detectron-output:/tmp/detectron-output \
-	-v /detectron/lib/datasets/data/hardhats_filters_coco:/detectron/lib/datasets/data/hardhats_filters_coco \
-	-v /detectron/lib/datasets/dummy_datasets.py:/detectron/lib/datasets/dummy_datasets.py \
-	-v /detectron/tools/infer_simple_json.py:/detectron/tools/infer_simple_json.py \
-	-v /home/user/vilin/hardhats_with_filters-3/results:/home/user/vilin/hardhats_with_filters-3/results \
-	--rm -it detectron:c2-cuda9-cudnn7
-	
-sudo nvidia-docker run \
-	-v /detectron/lib/datasets/dataset_catalog.py:/detectron/lib/datasets/dataset_catalog.py \
-	-v /detectron/configs/hardhats_persons/tutorial_1gpu_e2e_faster_rcnn_R-50-FPN.yaml:/detectron/configs/hardhats_persons/tutorial_1gpu_e2e_faster_rcnn_R-50-FPN.yaml \
-	-v /home/user/vilin/detectron-output/hardhats_persons:/home/user/vilin/detectron-output/hardhats_persons \
-	-v /detectron/lib/datasets/data/hardhats_persons:/detectron/lib/datasets/data/hardhats_persons \
-	-v /detectron/lib/datasets/dummy_datasets.py:/detectron/lib/datasets/dummy_datasets.py \
-	-v /detectron/tools/infer_simple_json.py:/detectron/tools/infer_simple_json.py \
-	-v /home/user/vilin/hardhats_persons/results:/home/user/vilin/hardhats_persons/results \
-	-v /home/user/vilin/detectron-output/hardhats_persons/train/hardhats_persons_train/generalized_rcnn/model_final.pkl:/home/user/vilin/detectron-output/hardhats_persons/train/hardhats_persons_train/generalized_rcnn/model_final.pkl \
-	-v /tmp:/tmp \
-	-v /home/user/vilin/gpn-images:/home/user/vilin/gpn-images \
-	--rm -it detectron:c2-cuda9-cudnn7
-	
-sudo docker exec 14e python2 tools/infer_simple.py \
-	--cfg /detectron/configs/hardhats_persons_2/tutorial_1gpu_e2e_faster_rcnn_R-50-FPN.yaml \
-	--output-dir /home/user/vilin/detectron-output/hardhats_persons_2/pdf \
-	--image-ext jpeg \
-	--wts /home/user/vilin/detectron-output/hardhats_persons_2/train/hardhats_persons_2_train/generalized_rcnn/model_iter19999.pkl \
-	/tmp/validation-images
-	
-sudo docker exec -it fe0 python2 tools/train_net.py \
-	--cfg configs/hardhats_persons_5/tutorial_1gpu_e2e_faster_rcnn_R-50-FPN.yaml \
-	OUTPUT_DIR /home/user/vilin/detectron-output/hardhats_persons_5
-	
-sudo docker exec 641 python2 tools/infer_simple_json.py \
-	--cfg /detectron/configs/hardhats_persons/tutorial_1gpu_e2e_faster_rcnn_R-50-FPN.yaml \
-	--output-dir /home/user/vilin/detectron-output/hardhats_persons \
-	--image-ext jpeg \
-	--wts /home/user/vilin/detectron-output/hardhats_persons/train/hardhats_persons_train/generalized_rcnn/model_final.pkl \
-	/tmp/validation-images/images00.01.02.000.jpeg
-	
-sudo nvidia-docker run \
-	-v /detectron/lib/datasets/dataset_catalog.py:/detectron/lib/datasets/dataset_catalog.py \
-	-v /detectron/lib/datasets/dummy_datasets.py:/detectron/lib/datasets/dummy_datasets.py \
-	-v /detectron/configs:/detectron/configs \
-	-v /detectron/lib/datasets/data:/detectron/lib/datasets/data \
-	-v /detectron/tools/infer_simple_json.py:/detectron/tools/infer_simple_json.py \
-	-v /home/user/vilin/detectron-output:/home/user/vilin/detectron-output \
-	-v /tmp:/tmp \
-	-v /home/user/vantonov/video/tmp:/home/user/vantonov/video/tmp \
-	--rm -it detectron:c2-cuda9-cudnn7
-	
-sudo docker exec ee0 python2 tools/infer_simple_json.py \
-	--cfg /detectron/configs/hardhats_persons/tutorial_1gpu_e2e_faster_rcnn_R-50-FPN.yaml \
-	--output-dir /tmp/gpn-violations/hardhats_persons \
-	--image-ext jpeg \
-	--wts /home/user/vilin/detectron-output/hardhats_persons/train/hardhats_persons_train/generalized_rcnn/model_final.pkl \
-	--csv /tmp/hardhats_persons.csv \
-	/home/user/vantonov/video/tmp/images
+sudo docker exec bdca python2 tools/custom/infer_simple_json.py \
+--cfg /detectron/configs/custom/hardhats_persons_5/tutorial_1gpu_e2e_faster_rcnn_R-50-FPN.yaml \
+--output-dir /tmp/gpn-violations/demo1_infer_simple \
+--image-ext jpg \
+--wts /home/user/vilin/detectron-output/hardhats_persons_5/train/hardhats_persons_5_train/generalized_rcnn/model_final.pkl \
+--csv /tmp/mag_images.csv \
+/tmp/mag_images
 	
 sudo rename 's/^\\*//' *
 
+for i in *.fa; do rename 's/^\\*//' "$i"; done
+
+sudo docker exec bdca python2 tools/custom/infer_simple_video_hgg.py \
+--cfg /detectron/configs/custom/hardhat_gloves_goggles_5/e2e_mask_rcnn_R-50-FPN_1x.yaml \
+--wts /home/user/vilin/detectron-output/hardhat_gloves_goggles_5/train/hardhat_gloves_goggles_3_train/generalized_rcnn/model_final.pkl \
+--output-video /tmp/mag_images.avi \
+--csv-path /tmp/mag_images.csv \
+--image-ext jpg \
+--video-res high \
+/tmp/mag_images
+
+sudo docker exec 891 python2 tools/custom/infer_simple_video_hggb.py \
+--cfg /detectron/configs/custom/hardhat_gloves_goggles_5/e2e_mask_rcnn_R-50-FPN_1x.yaml \
+--wts /home/user/vilin/detectron-output/hardhat_gloves_goggles_5/train/hardhat_gloves_goggles_3_train/generalized_rcnn/model_final.pkl \
+--image-ext jpg \
+--output-video /tmp/test_123.avi \
+--csv-path /tmp/test_123.csv \
+--video-res=high \
+/home/user/vantonov/video/tmp/demo3/00.00.06.000.jpg
+
+sudo docker exec 891 python2 tools/custom/grad-cam.py \
+--cfg /detectron/configs/custom/hardhat_gloves_goggles_5/e2e_mask_rcnn_R-50-FPN_1x.yaml \
+--wts /home/user/vilin/detectron-output/hardhat_gloves_goggles_5/train/hardhat_gloves_goggles_3_train/generalized_rcnn/model_final.pkl \
+--image-ext jpg \
+/tmp/mag_images/n03492922_19566.jpg
+
+
+
+#cut video to frames
+sudo python2 cut-video.py --video 3step_demo.avi --output_dir 3step_demo
+
+ffmpeg -f concat -i concat.txt -c copy 3step_demo.avi
+
+
+
+
+
+
+# run keras container
+sudo nvidia-docker run -d -it -u $(id -u) -p 0.0.0.0:6006:6006 \
+-v /home/user/vilin/tanks:/home/user/vilin/tanks \
+-v /home/user/vilin/cv:/home/user/vilin/cv \
+keras:latest /bin/bash
+
+sudo docker exec -it ca35 /bin/bash
+
+python dataset_aug.py -d /home/user/vilin/tanks/dataset -aug_path /home/user/vilin/tanks/aug_dataset
+
+python train.py \
+--dataset /home/user/vilin/tanks/dataset/only_tigers_augmented \
+--model /home/user/vilin/tanks/output/resnet_50_Adam_lr1e-5_wo_dropout_2dense_clean_ds_augv2 \
+--labelbin /home/user/vilin/tanks/output/resnet_50_Adam_lr1e-5_wo_dropout_2dense_clean_ds_augv2/labels_2.pkl
+
+
+# convert to tflite model
+ 
+python keras_to_tensorflow.py \
+--input_model="/home/user/vilin/tanks/output/best_models/004-val_loss=0.7220-acc=0.7494/full_model_weights.004-val_loss=0.7220-acc=0.7494.h5" \
+--output_model="/home/user/vilin/tanks/output/best_models/004-val_loss=0.7220-acc=0.7494/full_model_004-val_loss=0.7220-acc=0.7494_quantized.pb" \
+--quantize=True
+
+toco \
+--graph_def_file=/home/user/vilin/tanks/output/best_models/004-val_loss=0.7220-acc=0.7494/tflite/full_model_weights.004-val_loss=0.7220-acc=0.7494.pb \
+--output_file=/home/user/vilin/tanks/output/best_models/004-val_loss=0.7220-acc=0.7494/tflite/004-val_loss=0.7220-acc=0.7494_quantized_v2_1.tflite \
+--input_format=TENSORFLOW_GRAPHDEF \
+--output_format=TFLITE \
+--input_shape=1,224,224,3 \
+--input_array=input_1  \
+--output_array=output_layer/Softmax \
+--inference_type=QUANTIZED_UINT8 \
+--post_training_quantize
+
+
+
+#deep-voice-conversion
+
+nvidia-docker run -it -d \
+-p 0.0.0.0:5000:5000 \
+-p 0.0.0.0:6006:6006 \
+-v /home/user/vilin/deep-voice-conversion:/home/user/vilin/deep-voice-conversion \
+$USER/deep-voice-transfer-gpu:latest

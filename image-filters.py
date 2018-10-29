@@ -11,17 +11,17 @@ import shutil
 import random
 import copy
 
-base_dir = "e:\\Dev\\datasets\\image-net\\n03492922\\images_wo_filters"
-base_train_images_dir = "e:\\Dev\\datasets\\image-net\\n03492922\\images_wo_filters\\train"
-base_val_images_dir = "e:\\Dev\\datasets\\image-net\\n03492922\\images_wo_filters\\val"
-destination_base_dir = "e:\\Dev\\datasets\\image-net\\n03492922\\images_with_filters"
-destination_train_images_dir = "e:\\Dev\\datasets\\image-net\\n03492922\\images_with_filters\\train"
-destination_val_images_dir = "e:\\Dev\\datasets\\image-net\\n03492922\\images_with_filters\\val"
+base_dir = "e:\\dev\\datasets\\ann_results\\ann_results_3 (belt)\\separated"
+base_train_images_dir = "e:\\dev\\datasets\\ann_results\\ann_results_3 (belt)\\separated\\train\\images"
+base_val_images_dir = "e:\\dev\\datasets\\ann_results\\ann_results_3 (belt)\\separated\\val\\images"
+destination_base_dir = "e:\\Dev\\datasets\\detectron-input\\hggb\\origin_with_filters"
+destination_train_images_dir = "e:\\Dev\\datasets\\detectron-input\\hggb\\origin_with_filters\\train"
+destination_val_images_dir = "e:\\Dev\\datasets\\detectron-input\\hggb\\origin_with_filters\\val"
 
-with open(os.path.join(base_dir, "instances_train2014.json"), "r") as annotationsTrain:
+with open(os.path.join(base_dir, "train\\instances_train.json"), "r") as annotationsTrain:
     annotationsTrainData = json.load(annotationsTrain)
 
-with open(os.path.join(base_dir, "instances_val2014.json"), "r") as annotationsVal:
+with open(os.path.join(base_dir, "val\\instances_val.json"), "r") as annotationsVal:
     annotationsValData = json.load(annotationsVal)
 
 newAnnotationsTrainData = copy.deepcopy(annotationsTrainData)
@@ -139,10 +139,12 @@ def add_filters_to_img(destination_images_dir, img_path, img_name, annotations, 
 train_images = [f for f in listdir(base_train_images_dir) if isfile(join(base_train_images_dir, f))]
 
 for img in train_images:
-    shutil.copy(os.path.join(base_train_images_dir, img), os.path.join(destination_train_images_dir, img))
+    destination_img_path = os.path.join(destination_train_images_dir, img)
+
+    shutil.copy(os.path.join(base_train_images_dir, img), destination_img_path)
     add_filters_to_img(destination_train_images_dir, os.path.join(base_train_images_dir, img), img, annotationsTrainData, newAnnotationsTrainData)
 
-with open(os.path.join(destination_base_dir, "instances_train2014.json"), "w+") as annTrainWithFilters:
+with open(os.path.join(destination_base_dir, "instances_train.json"), "w") as annTrainWithFilters:
     json.dump(newAnnotationsTrainData, annTrainWithFilters)
 
 for img in annotationsValData["images"]:
@@ -164,6 +166,6 @@ for img in val_images:
     shutil.copy(os.path.join(base_val_images_dir, img), os.path.join(destination_val_images_dir, img))
     add_filters_to_img(destination_val_images_dir, os.path.join(base_val_images_dir, img), img, annotationsValData, newAnnotationsValData)
 
-with open(os.path.join(destination_base_dir, "instances_val2014.json"), "w+") as annValWithFilters:
+with open(os.path.join(destination_base_dir, "instances_val.json"), "w") as annValWithFilters:
     json.dump(newAnnotationsValData, annValWithFilters)
 
